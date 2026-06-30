@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yaz Okulu Kur'an-ı Kerim Takip Çizelgesi</title>
+    <!-- Tailwind CSS for modern responsive styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for children-friendly elegant typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for beautiful icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Quicksand', 'Inter', sans-serif;
+        }
+        
+        /* Print optimization to force exactly A4 single page and background printing */
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 0.5cm 0.45cm;
+            }
+            body {
+                background: white !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .print-shadow-none {
+                box-shadow: none !important;
+            }
+            .a4-container {
+                border: none !important;
+                box-shadow: none !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                min-height: auto !important;
+                justify-content: flex-start !important;
+            }
+            .print-text-xs {
+                font-size: 0.7rem !important;
+            }
+            .print-py-1 {
+                padding-top: 0.25rem !important;
+                padding-bottom: 0.25rem !important;
+            }
+            .print-gap-2 {
+                gap: 0.5rem !important;
+            }
+            #bannerCard {
+                margin-bottom: 0.5rem !important;
+                padding: 0.45rem 0.75rem !important;
+            }
+            #printSheet > div:first-child > .grid {
+                margin-bottom: 0.5rem !important;
+                gap: 0.4rem !important;
+                padding: 0.45rem !important;
+            }
+            #printSheet > div:last-child {
+                margin-top: 0.35rem !important;
+            }
+            #printSheet > div:last-child > div {
+                gap: 0.5rem !important;
+            }
+            #printSheet > div:last-child > div > div {
+                padding: 0.5rem !important;
+            }
+        }
+
+        /* Interactive input dashed underline effect */
+        .dashed-input {
+            border-bottom: 1.5px dashed #cbd5e1;
+            background: transparent;
+            transition: all 0.2s ease;
+        }
+        .dashed-input:focus {
+            border-bottom-color: var(--primary-color);
+            outline: none;
+            background: rgba(240, 253, 250, 0.5);
+        }
+
+        /* Checkbox customization */
+        .custom-checkbox {
+            width: 1.2rem;
+            height: 1.2rem;
+            cursor: pointer;
+            accent-color: var(--primary-color);
+        }
+
+        /* Color Themes Classes */
+        .theme-emerald {
+            --primary-color: #059669;
+            --primary-light: #f0fdf4;
+            --primary-border: #a7f3d0;
+            --primary-accent: #10b981;
+        }
+        .theme-sky {
+            --primary-color: #0284c7;
+            --primary-light: #f0f9ff;
+            --primary-border: #bae6fd;
+            --primary-accent: #0ea5e9;
+        }
+        .theme-pink {
+            --primary-color: #db2777;
+            --primary-light: #fdf2f8;
+            --primary-border: #fbcfe8;
+            --primary-accent: #ec4899;
+        }
+        .theme-mono {
+            --primary-color: #1e293b;
+            --primary-light: #f8fafc;
+            --primary-border: #cbd5e1;
+            --primary-accent: #475569;
+        }
+
+        .star-icon {
+            transition: transform 0.1s ease;
+        }
+        .star-icon:hover {
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen py-6 px-4 flex flex-col items-center justify-start theme-emerald transition-colors duration-300" id="bodyTheme">
+
+    <!-- Control Panel (Non-Printable) -->
+    <div class="no-print w-full max-w-5xl bg-white shadow-md rounded-2xl p-4 mb-6 border border-slate-200 flex flex-wrap gap-4 items-center justify-between">
+        <div class="flex items-center gap-3">
+            <span class="p-2 bg-emerald-100 text-emerald-700 rounded-lg" id="controlIcon">
+                <i class="fa-solid fa-print text-lg"></i>
+            </span>
+            <div>
+                <h2 class="font-bold text-slate-800 text-sm md:text-base">Yazdırılabilir Takip Paneli</h2>
+                <p class="text-xs text-slate-500">Çıktı almadan önce bilgileri doldurabilir, yıldızları işaretleyebilir veya rengi değiştirebilirsiniz.</p>
+            </div>
+        </div>
+        
+        <div class="flex flex-wrap items-center gap-3">
+            <!-- Theme Selectors -->
+            <div class="flex items-center gap-1.5 bg-slate-50 p-1.5 rounded-xl border border-slate-200">
+                <button onclick="changeTheme('emerald')" class="w-6 h-6 rounded-full bg-emerald-600 border-2 border-white ring-2 ring-emerald-600/20 shadow-sm" title="Zümrüt Yeşili"></button>
+                <button onclick="changeTheme('sky')" class="w-6 h-6 rounded-full bg-sky-600 border-2 border-white hover:ring-2 hover:ring-sky-600/20 shadow-sm" title="Gökyüzü Mavisi"></button>
+                <button onclick="changeTheme('pink')" class="w-6 h-6 rounded-full bg-pink-600 border-2 border-white hover:ring-2 hover:ring-pink-600/20 shadow-sm" title="Tatlı Pembe"></button>
+                <button onclick="changeTheme('mono')" class="w-6 h-6 rounded-full bg-slate-700 border-2 border-white hover:ring-2 hover:ring-slate-700/20 shadow-sm" title="Fotokopi Dostu (Siyah-Beyaz)"></button>
+            </div>
+
+            <!-- Action Buttons -->
+            <button onclick="clearForm()" class="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg transition flex items-center gap-1.5">
+                <i class="fa-solid fa-eraser"></i> Temizle
+            </button>
+            <button onclick="window.print()" class="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-lg transition shadow-md flex items-center gap-1.5" id="printBtn">
+                <i class="fa-solid fa-print"></i> Yazdır / PDF Kaydet
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN PRINTABLE CANVAS / SHEET -->
+    <div class="a4-container w-full max-w-[210mm] min-h-[290mm] bg-white print-shadow-none shadow-2xl rounded-2xl border border-slate-200 p-6 md:p-8 flex flex-col justify-between transition-colors duration-300" id="printSheet">
+        
+        <div>
+            <!-- Banner / Header with Decorative Framing -->
+            <div class="relative overflow-hidden rounded-2xl p-4 md:p-5 border text-center mb-4 transition-colors duration-300" id="bannerCard" style="background: var(--primary-light); border-color: var(--primary-border);">
+                <!-- Subtle Decorative Shapes -->
+                <div class="absolute -top-12 -left-12 w-24 h-24 rounded-full opacity-10" style="background: var(--primary-color);"></div>
+                <div class="absolute -bottom-12 -right-12 w-28 h-28 rounded-full opacity-10" style="background: var(--primary-color);"></div>
+                
+                <h1 class="text-xl md:text-2xl font-bold tracking-wide flex items-center justify-center gap-2 mb-1" style="color: var(--primary-color);">
+                    🌙 YAZ OKULU KUR'AN-I KERİM TAKİP ÇİZELGESİ 🌙
+                </h1>
+                <p class="text-xs md:text-sm italic font-medium opacity-80" style="color: var(--primary-color);">
+                    "Sizin en hayırlınız, Kur'an'ı öğrenen ve öğreteninizdir." (Hadis-i Şerif)
+                </p>
+            </div>
+
+            <!-- Student info inputs grid without placeholders -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4 text-xs md:text-sm bg-slate-50/50 p-3 rounded-xl border border-slate-100">
+                <div class="flex items-center gap-1.5">
+                    <span class="font-bold text-slate-700 whitespace-nowrap"><i class="fa-solid fa-user text-xs opacity-70"></i> Adı Soyadı:</span>
+                    <input type="text" class="dashed-input flex-1 px-1 font-semibold text-slate-800">
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <span class="font-bold text-slate-700 whitespace-nowrap"><i class="fa-solid fa-graduation-cap text-xs opacity-70"></i> Sınıf / Grup:</span>
+                    <input type="text" class="dashed-input flex-1 px-1 font-semibold text-slate-800">
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <span class="font-bold text-slate-700 whitespace-nowrap"><i class="fa-solid fa-chalkboard-user text-xs opacity-70"></i> Hocası:</span>
+                    <input type="text" class="dashed-input flex-1 px-1 font-semibold text-slate-800">
+                </div>
+            </div>
+
+            <!-- 6-Week Progress Grid (2 Columns, 3 Rows to fit on single page) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 print-gap-2">
+                
+                <!-- WEEK 1 -->
+                <div class="border rounded-xl p-2.5 transition-colors duration-300" style="border-color: var(--primary-border);">
+                    <div class="font-bold text-[11px] px-2 py-1 rounded-md flex justify-between items-center mb-1.5" style="background: var(--primary-light); color: var(--primary-color);">
+                        <span>📅 1. HAFTA</span>
+                        <span>29.06 - 03.07.2026</span>
+                    </div>
+                    <div class="space-y-1 text-xs">
+                        <div class="grid grid-cols-12 gap-1 items-center font-bold text-[10px] text-slate-500 border-b pb-1 mb-1 text-center">
+                            <span class="col-span-2 text-left">Gün</span>
+                            <span class="col-span-5 text-left pl-1">Kur'an-ı Kerim / Elif-Ba</span>
+                            <span class="col-span-3 text-left pl-1">Sure / Dua</span>
+                            <span class="col-span-1">İyilik</span>
+                            <span class="col-span-1">Onay</span>
+                        </div>
+                        <div class="grid grid-cols-12 gap-1 items-center py-0.5 border-b border-slate-100 last:border-0">
+                            <span class="col-span-2 font-bold text-slate-700 text-[11px]">Pzt</span>
+                            <input type="text" class="col-span-5 dashed-input text-center text-xs py-0.5">
+                            <input type="text" class="col-span-3 dashed-input text-center text-xs py-0.5">
+                            <div class="col-span-1 flex justify-center items-center"><input type="checkbox" class="custom-checkbox"></div>
+                            <div class="col-span-1 flex justify-center items-center"><span class="text-amber-500 text-sm cursor-pointer select-none star-icon" onclick="toggleStar(this)">☆</span></div>
+                        </div>
+                        <div class="grid grid-cols-12 gap-1 items-center py-0.5 border-b border-slate-100 last:border-0">
+                            <span class="col-span-2 font-bold text-slate-700 text-[11px]">Sal</span>
+                            <input type="text" class="col-span-5 dashed-input text-center text-xs py-0.5">
+                            <input type="text" class="col-span-3 dashed-input text-center text-xs py-0.5">
+                            <div class="col-span-1 flex justify-center items-center"><input type="checkbox" class="custom-checkbox"></div>
+                            <div class="col-span-1 flex justify-center items-center"><span class="text-amber-500 text-sm cursor-pointer select-none star-icon" onclick="toggleStar(this)">☆</span></div>
+                        </div>
+                        <div class="grid grid-cols-12 gap-1 items-center py-0.5 border-b border-slate-100 last:border-0">
+                            <span class="col-span-2 font-bold text-slate-700 text-[11px]">Çar</span>
+                            <input type="text" class="col-span-5 dashed-input text-center text-xs py-0.5">
+                            <input type="text" class="col-span-3 dashed-input text-center text-xs py-0.5">
+                            <div class="col-span-1 flex justify-center items-center"><input type="checkbox" class="custom-checkbox"></div>
+                            <div class="col-span-1 flex justify-center items-center"><span class="text-amber-500 text-sm cursor-pointer select-none star-icon" onclick="toggleStar(this)">☆</span></div>
+                        </div>
+                        <div class="grid grid-cols-12 gap-1 items-center py-0.5 border-b border-slate-100 last:border-0">
+                            <span class="col-span-2 font-bold text-slate-700 text-[11px]">Per</span>
+                            <input type="text" class="col-span-5 dashed-input text-center text-xs py-0.5">
+                            <input type="text" class="col-span-3 dashed-input text-center text-xs py-0.5">
+                            <div class="col-span-1 flex justify-center items-center"><input type="checkbox" class="custom-checkbox"></div>
+                            <div class="col-span-1 flex justify-center items-center"><span class="text-amber-500 text-sm cursor-pointer select-none star-icon" onclick="toggleStar(this)">☆</span></div>
+                        </div>
+                        <div class="grid grid-cols-12 gap-1 items-center py-0.5 border-b border-slate-100 last:border-0">
+                            <span class="col-span-2 font-bold text-slate-700 text-[11px]">Cum</span>
+                            <input type="text" class="col-span-5 dashed-input text-center text-xs py-0.5">
+                            <input type="text" class="col-span-3 dashed-input text-center text-xs py-0.5">
+                            <div class="col-span-1 flex justify-center items-center"><input type="checkbox" class="custom-checkbox"></div>
+                            <div class="col-span-1 flex justify-center items-center"><span class="text-amber-500 text-sm cursor-pointer select-none star-icon" onclick="toggleStar(this)">☆</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- WEEK 2 -->
+                <div class="border rounded-xl p-2.5 transition-colors duration-300" style="border-color: var(--primary-border);">
+                    <div class="font-bold text-[11px] px-2 py-1 rounded-md flex justify-between items-center mb-1.5" style="background: var(--primary-light); color: var(--primary-color);">
+                        <span>📅 2. HAFTA</span>
+                        <span>06.07 - 10.07.2026</span>
+                    </div>
+                    <div class="space-y-1 text-xs">
+                        <div class="grid grid-cols-12 gap-1 items-center font-bold text-[10px] text-slate-500 border-b pb-1 mb-1 text-center">
+                            <span class="col-span-2 text-left">Gün</span>
+                            <span class="col-span-5 text-left pl-1">Kur'an-ı Kerim / Elif-Ba</span>
+                            <span class="col-span-3 text-left pl-1">Sure / Dua</span>
+                            <span class="col-span-1">İyilik</span>
+                            <span class="col-span-1">Onay</span>
+                        </div>
+                        <div class="grid grid-cols-12 gap-1 items-center py-0.5 border-b border-slate-100 last:border-0">
+                            <span class="col-span-2 font-bold text-slate-700 text-[11px]">Pzt</span>
+                            <input type="text" class="col-span-5 dashed-input text-center text-xs py-0.5">
+                            <input type="text" class="col-span-3 dashed-input text-center text-xs py-0.5">
+                            <div class="col-span-1 flex justify-center items-center"><input type="checkbox" class="custom-checkbox"></div>
+                            <div class="col-span-1 flex justify-center items-center"><span class="text-amber-500 text-sm cursor-pointer select-none star-icon" onclick="toggleStar(this)">☆</span></div>
+                        </div>
+                        <div class="grid grid-cols-12 gap-1 items-center py-0.5 border-b border-slate-100 last:border-0">
+                            <span class="col-span-2 font-bold text-slate-700 text-[11px]">Sal</span>
+                            <input type="text" class="col-span-5 dashed-input text-center text-xs py-0.5">
+                            <input type="text" class="col-span-3 dashed-input text-center text-xs py-0.5">
+                            <div class="col-span-1 flex justify-center items-center"><input type="checkbox" class="custom-checkbox"></div>
+                            <div class="col-span-1 flex justify-center items-center"><span class="text-amber-500 text-sm cursor-pointer select-none star-icon" onclick="toggleStar(this)">☆</span></div>
+                        </div>
+                        <div class="grid grid-cols-12 gap-1 items-center py-0.5 border-b border-slate-100 last:border-0">
+                            <span class="col-span-2 font-bold text-slate-700 text-[11px]">Çar</span>
+                            <input type="text" class="col-span-5 dashed-input text-center text-xs py-0.5">
+                            <input type="text" class="col-span-3 dashed-input text-center text-xs py-0.5">
+                            <div class="col-span-1 flex justify-center items-center"><input type="checkbox" class="custom-checkbox"></div>
+                            <div class="col-span-1 flex justify-center items-center"><span class="text-amber-500 text-sm cursor-pointer select-none star-icon" onclick="toggleStar(this)">☆</span></div>
+                        </div>
+                        <div class="grid grid-cols-12 gap-1 items-center py-0.5 border-b border-slate-100 last:border-0">
+                            <span class="col-span-2 font-bold text-slate-700 text-[11px]">Per</span>
+                            <input type="text" class="col-span-5 dashed-input text-center text-xs py-0.5">
+                            <input type="text" class="col-span-3 dashed-input text-center text-xs py-0.5">
+                            <div class="col-span-1 flex justify-center items-center"><input type="checkbox" class="custom-checkbox"></div>
+                            <div class="col-span-1 flex justify-center items-center"><span class="text-amber-500 text-sm cursor-pointer select-none star-icon" onclick="toggleStar(this)">☆</span></div>
+                        </div>
+                        <div class="grid grid-cols-12 gap-1 items-center py-0.5 border-b border-slate-100 last:border-0">
+                            <span class="col-span-2 font-bold text-slate-700 text-[11px]">Cum</span>
+                            <input type="text" class="col-span-5 dashed-input text-center text-xs py-0.5">
+                            <input type="text" class="col-span-3 dashed-input text-center text-xs py-0.5">
+                            <div class="col-span-1 flex justify-center items-center"><input type="checkbox" class="custom-checkbox"></div>
+                            <div class="col-span-1 flex justify-center items-center"><span class="text-amber-500 text-sm cursor-pointer select-none star-icon" onclick="toggleStar(this)">☆</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- WEEK 3 -->
+                <div class="border rounded-xl p-2.5 transition-colors duration-300" style="border-color: var(--primary-border);">
+                    <div class="font-bold text-[11px] px-2 py-1 rounded-md flex justify-between items-center mb-1.5" style="background: var(--primary-light); color: var(--primary-color);">
+                        <span>📅 3. HAFTA</span>
+                        <span>13.07 - 17.07.2026</span>
+                    </div>
+                    <div class="space-y-1 text-xs">
+                        <div class="grid grid-cols-12 gap-1 items-center font-bold text-[10px] text-slate-500 border-b pb-1 mb-1 text-center">
+                            <span class="col-span-2 text-left">Gün</span>
+                            <span class="col-span-5 text-left pl-1">Kur'an-ı Kerim / Elif-Ba</span>
+                            <span class="col-span-3 text-left pl-1">Sure / Dua</span>
+                            <span class="col-span-1">İyilik</span>
+                            <span class="col-span-1">Onay</span>
+                        </div>
+                        <div class="grid grid-cols-12 gap-1 items-center py-0.5 border-b border-slate-100 last:border-0">
+                            <span class="col-span-2 font-bold text-slate-700 text-[11px]">Pzt</span>
+                            <input type="text" class="col-span-5 dashed-input text-center text-xs py-0.5">
+                            <input type="text" class="col-span-3 dashed-input text-center text-xs py-0.5">
+                            <div class="col-span-1 flex justify-center items-center"><input type="checkbox" class="custom-checkbox"></div>
+                            <div class="col-span-1 flex justify-center items-center"><span class="text-amber-500 text-sm cursor-pointer select-none star-icon" onclick="toggleStar(this)">☆</span></div>
+                        </div>
+                        <div class="grid grid-cols-12 gap-1 items-center py-0.5 border-b border-slate-100 last:border-0">
+                            <span class="col-span-2 font-bold text-slate-700 text-[11px]">Sal</span>
+                            <input type="text" class="col-span-5 dashed-input text-center text-xs py-0.5">
+                            <input type="text" class="col-span-3 dashed-input text-center text-xs py-0.5">
+                            <div class="col-span-1 flex justify-center items-center"><input type="checkbox" class="custom-checkbox"></div>
+                            <div class="col-span-1 flex justify-center items-center"><span class="text-amber-500 text-sm cursor-pointer select-none star-icon" onclick="toggleStar(this)">☆</span></div>
+                        </div>
+                        <div class="grid grid-cols-12 gap-1 items-center py-0.5 border-b border-slate-100 last:border-0">
+                            <span class="col-span-2 font-bold text-slate-700 text-[11px]">Çar</span>
+                            <input type="text" class="col-span-5 dashed-input text-center text-xs py-0.5">
+                            <input type="text" class="col-span-3 dashed-input text-center text-xs py-0.5">
+                            <div class="col-span-1 flex justify-center items-center"><input type="checkbox" class="custom-checkbox"></div>
+                            <div class="col-span-1 flex justify-center items-center"><span class="text-amber-500 text-sm cursor-pointer select-none star-icon" onclick="toggleStar(this)">☆</span></div>
+                        </div>
+                        <div class="grid grid-cols-12 gap-1 items-center py-0.5 border-b border-slate-100 last:border-0">
+                            <span class="col-span-2 font-bold text-slate-700 text-[11px]">Per</span>
+                            <input type="text" class="col-span-5 dashed-input text-center text-xs py-0.5">
+                            <input type="text" class="col-span-3 dashed-input text-center text-xs py-0.5">
+                            <div class="col-span-1 flex justify-center items-center"><input type="checkbox" class="custom-checkbox"></div>
+                            <div class="col-span-1 flex justify-center items-center"><span class="text-amber-500 text-sm cursor-pointer select-none star-icon" onclick="toggleStar(this)">☆</span></div>
+                        </div>
+                        <div class="grid grid-cols-12 gap-1 items-center py-0.5 border-b border-slate-100 last:border-0">
+                            <span class="col-span-2 font-bold text-slate-700 text-[11px]">Cum</span>
+                            <input type="text" class="col-span-5 dashed-input text-center text-xs py-0.5">
+                            <input type="text" class="col-span-3 dashed-input text-center text-xs py-0.5">
+                            <div class="col-span-1 flex justify-center items-center"><input type="checkbox" class="custom-checkbox"></div>
+                            <div class="col-span-1 flex justify-center items-center"><span class="text-amber-500 text-sm cursor-pointer select-none star-icon" onclick="toggleStar(this)">☆</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- WEEK 4 -->
+                <div class="border rounded-xl p-2.5 transition-colors duration-300" style="border-color: var(--primary-border);">
+                    <div class="font-bold text-[11px] px-2 py-1 rounded-md flex justify-between items-center mb-1.5" style="background: var(--primary-light); color: var(--primary-color);">
+                        <span>📅 4. HAFTA</span>
+                        <span>20.07 - 24.07.2026</span>
+                    </div>
+                    <div class="space-y-1 text-xs">
+                        <div class="grid grid-cols-12 gap-1 items-center font-bold text-[10px] text-slate-500 border-b pb-1 mb-1 text-center">
+                            <span class="col-span-2 text-left">Gün</span>
+                            <span class="col-span-5 text-left pl-1">Kur'an-ı Kerim / Elif-Ba</span>
+                            <span class="col-span-3 text-left pl-1">Sure / Dua</span>
+                            <span class="col-span-1">İyilik</span>
+                            <span class="col-span-1">Onay</span>
+                        </div>
+                        <div class="grid grid-cols-12 gap-1 items-center py-0.5 border-b border-slate-100 last:border-0">
+                            <span class="col-span-2 font-bold text-slate-700 text-[11px]">Pzt</span>
+                            <input type="text" class="col-span-5 dashed-input text-center text-xs py-0.5">
+                            <input type="text" class="col-span-3 dashed-input text-center text-xs py-0.5">
+                            <div class="col-span-1 flex justify-center items-center"><input type="checkbox" class="custom-checkbox"></div>
+                            <div class="col-span-1 flex justify-center items-center"><span class="text-amber-500 text-sm cursor-pointer select-none star-icon" onclick="toggleStar(this)">☆</span></div>
+                        </div>
+                        <div class="grid grid-cols-12 gap-1 items-center py-0.5 border-b border-slate-100 last:border-0">
+                            <span class="col-span-2 font-bold text-slate-700 text-[11px]">Sal</span>
+                            <input type="text" class="col-span-5 dashed-input text-center text-xs py-0.5">
+                            <input type="text" class="col-span-3 dashed-input text-center text-xs py-0.5">
+                            <div class="col-span-1 flex justify-center items-center"><input type="checkbox" class="custom-checkbox"></div>
+                            <div class="col-span-1 flex justify-center items-center"><span class="text-amber-500 text-sm cursor-pointer select-none star-icon" onclick="toggleStar(this)">☆</span></div>
+                        </div>
+                        <div class="grid grid-cols-12 gap-1 items-center py-0.5 border-b border-slate-100 last:border-0">
+                            <span class="col-span-2 font-bold text-slate-700 text-[11px]">Çar</span>
+                            <input type="text" class="col-span-5 dashed-input text-center text-xs py-0.5">
+                            <input type="text" class="col-span-3 dashed-input text-center text-xs py-0.5">
+                            <div class="col-span-1 flex justify-center items-center"><input type="checkbox" class="custom-checkbox"></div>
+                            <div class="col-span-1 flex justify-center items-center"><span class="text-amber-500 text-sm cursor-pointer select-none star-icon" onclick="toggleStar(this)">☆</span></div>
+                        </div>
+                        <div class="grid grid-cols-12 gap-1 items-center py-0.5 border-b border-slate-100 last:border-0">
+                            <span class="col-span-2 font-bold text-slate-700 text-[11px]">Per</span>
+                            <input type="text" class="col-span-5 dashed-input text-center text-xs py-0.5">
+                            <input type="text" class="col-span-3 dashed-input text-center text-xs py-0.5">
+                            <div class="col-span-1 flex justify-center items-center"><input type="checkbox" class="custom-checkbox"></div>
+                            <div class="col-span-1 flex justify-center items-center"><span class="text-amber-500 text-sm cursor-pointer select-none star-icon" onclick="toggleStar(this)">☆</span></div>
+                        </div>
+                        <div class="grid grid-cols-12 gap-1 items-center py-0.5 border-b border-slate-100 last:border-0">
+                            <span class="col-span-2 font-bold text-slate-700 text-[11px]">Cum</span>
+                            <input type="text" class="col-span-5 dashed-input text-center text-xs py-0.5">
+                            <input type="text" class="col-span-3 dashed-input text-center text-xs py-0.5">
+                            <div class="col-span-1 flex justify-center items-center"><input type="checkbox" class="custom-checkbox"></div>
+                            <div class="col-span-1 flex justify-center items-center"><span class="text-amber-500 text-sm cursor-pointer select-none star-icon" onclick="toggleStar(this)">☆</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- WEEK 5 -->
+                <div class="border rounded-xl p-2.5 transition-colors duration-300" style="border-color: var(--primary-border);">
+                    <div class="font-bold text-[11px] px-2 py-1 rounded-md flex justify-between items-center mb-1.5" style="background: var(--primary-light); color: var(--primary-color);">
+                        <span>📅 5. HAFTA</span>
+                        <span>27.07 - 31.07.2026</span>
+                    </div>
+                    <div class="space-y-1 text-xs">
+                        <div class="grid grid-cols-12 gap-1 items-center font-bold text-[10px] text-slate-500 border-b pb-1 mb-1 text-center">
+                            <span class="col-span-2 text-left">Gün</span>
+                            <span class="col-span-5 text-left pl-1">Kur'an-ı Kerim / Elif-Ba</span>
+                            <span class="col-span-3 text-left pl-1">Sure / Dua</span>
+                            <span class="col-span-1">İyilik</span>
+                            <span class="col-span-1">Onay</span>
+                        </div>
+                        <div class="grid grid-cols-12 gap-1 items-center py-0.5 border-b border-slate-100 last:border-0">
+                            <span class="col-span-2 font-bold text-slate-700 text-[11px]">Pzt</span>
+                            <input type="text" class="col-span-5 dashed-input text-center text-xs py-0.5">
+                            <input type="text" class="col-span-3 dashed-input text-center text-xs py-0.5">
+                            <div class="col-span-1 flex justify-center items-center"><input type="checkbox" class="custom-checkbox"></div>
+                            <div class="col-span-1 flex justify-center items-center"><span class="text-amber-500 text-sm cursor-pointer select-none star-icon" onclick="toggleStar(this)">☆</span></div>
+                        </div>
+                        <div class="grid grid-cols-12 gap-1 items-center py-0.5 border-b border-slate-100 last:border-0">
+                            <span class="col-span-2 font-bold text-slate-700 text-[11px]">Sal</span>
+                            <input type="text" class="col-span-5 dashed-input text-center text-xs py-0.5">
+                            <input type="text" class="col-span-3 dashed-input text-center text-xs py-0.5">
+                            <div class="col-span-1 flex justify-center items-center"><input type="checkbox" class="custom-checkbox"></div>
+                            <div class="col-span-1 flex justify-center items-center"><span class="text-amber-500 text-sm cursor-pointer select-none star-icon" onclick="toggleStar(this)">☆</span></div>
+                        </div>
+                        <div class="grid grid-cols-12 gap-1 items-center py-0.5 border-b border-slate-100 last:border-0">
+                            <span class="col-span-2 font-bold text-slate-700 text-[11px]">Çar</span>
+                            <input type="text" class="col-span-5 dashed-input text-center text-xs py-0.5">
+                            <input type="text" class="col-span-3 dashed-input text-center text-xs py-0.5">
+                            <div class="col-span-1 flex justify-center items-center"><input type="checkbox" class="custom-checkbox"></div>
+                            <div class="col-span-1 flex justify-center items-center"><span class="text-amber-500 text-sm cursor-pointer select-none star-icon" onclick="toggleStar(this)">☆</span></div>
+                        </div>
+                        <div class="grid grid-cols-12 gap-1 items-center py-0.5 border-b border-slate-100 last:border-0">
+                            <span class="col-span-2 font-bold text-slate-700 text-[11px]">Per</span>
+                            <input type="text" class="col-span-5 dashed-input text-center text-xs py-0.5">
+                            <input type="text" class="col-span-3 dashed-input text-center text-xs py-0.5">
+                            <div class="col-span-1 flex justify-center items-center"><input type="checkbox" class="custom-checkbox"></div>
+                            <div class="col-span-1 flex justify-center items-center"><span class="text-amber-500 text-sm cursor-pointer select-none star-icon" onclick="toggleStar(this)">☆</span></div>
+                        </div>
+                        <div class="grid grid-cols-12 gap-1 items-center py-0.5 border-b border-slate-100 last:border-0">
+                            <span class="col-span-2 font-bold text-slate-700 text-[11px]">Cum</span>
+                            <input type="text" class="col-span-5 dashed-input text-center text-xs py-0.5">
+                            <input type="text" class="col-span-3 dashed-input text-center text-xs py-0.5">
+                            <div class="col-span-1 flex justify-center items-center"><input type="checkbox" class="custom-checkbox"></div>
+                            <div class="col-span-1 flex justify-center items-center"><span class="text-amber-500 text-sm cursor-pointer select-none star-icon" onclick="toggleStar(this)">☆</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- WEEK 6 -->
+                <div class="border rounded-xl p-2.5 transition-colors duration-300" style="border-color: var(--primary-border);">
+                    <div class="font-bold text-[11px] px-2 py-1 rounded-md flex justify-between items-center mb-1.5" style="background: var(--primary-light); color: var(--primary-color);">
+                        <span>📅 6. HAFTA</span>
+                        <span>03.08 - 07.08.2026</span>
+                    </div>
+                    <div class="space-y-1 text-xs">
+                        <div class="grid grid-cols-12 gap-1 items-center font-bold text-[10px] text-slate-500 border-b pb-1 mb-1 text-center">
+                            <span class="col-span-2 text-left">Gün</span>
+                            <span class="col-span-5 text-left pl-1">Kur'an-ı Kerim / Elif-Ba</span>
+                            <span class="col-span-3 text-left pl-1">Sure / Dua</span>
+                            <span class="col-span-1">İyilik</span>
+                            <span class="col-span-1">Onay</span>
+                        </div>
+                        <div class="grid grid-cols-12 gap-1 items-center py-0.5 border-b border-slate-100 last:border-0">
+                            <span class="col-span-2 font-bold text-slate-700 text-[11px]">Pzt</span>
+                            <input type="text" class="col-span-5 dashed-input text-center text-xs py-0.5">
+                            <input type="text" class="col-span-3 dashed-input text-center text-xs py-0.5">
+                            <div class="col-span-1 flex justify-center items-center"><input type="checkbox" class="custom-checkbox"></div>
+                            <div class="col-span-1 flex justify-center items-center"><span class="text-amber-500 text-sm cursor-pointer select-none star-icon" onclick="toggleStar(this)">☆</span></div>
+                        </div>
+                        <div class="grid grid-cols-12 gap-1 items-center py-0.5 border-b border-slate-100 last:border-0">
+                            <span class="col-span-2 font-bold text-slate-700 text-[11px]">Sal</span>
+                            <input type="text" class="col-span-5 dashed-input text-center text-xs py-0.5">
+                            <input type="text" class="col-span-3 dashed-input text-center text-xs py-0.5">
+                            <div class="col-span-1 flex justify-center items-center"><input type="checkbox" class="custom-checkbox"></div>
+                            <div class="col-span-1 flex justify-center items-center"><span class="text-amber-500 text-sm cursor-pointer select-none star-icon" onclick="toggleStar(this)">☆</span></div>
+                        </div>
+                        <div class="grid grid-cols-12 gap-1 items-center py-0.5 border-b border-slate-100 last:border-0">
+                            <span class="col-span-2 font-bold text-slate-700 text-[11px]">Çar</span>
+                            <input type="text" class="col-span-5 dashed-input text-center text-xs py-0.5">
+                            <input type="text" class="col-span-3 dashed-input text-center text-xs py-0.5">
+                            <div class="col-span-1 flex justify-center items-center"><input type="checkbox" class="custom-checkbox"></div>
+                            <div class="col-span-1 flex justify-center items-center"><span class="text-amber-500 text-sm cursor-pointer select-none star-icon" onclick="toggleStar(this)">☆</span></div>
+                        </div>
+                        <div class="grid grid-cols-12 gap-1 items-center py-0.5 border-b border-slate-100 last:border-0">
+                            <span class="col-span-2 font-bold text-slate-700 text-[11px]">Per</span>
+                            <input type="text" class="col-span-5 dashed-input text-center text-xs py-0.5">
+                            <input type="text" class="col-span-3 dashed-input text-center text-xs py-0.5">
+                            <div class="col-span-1 flex justify-center items-center"><input type="checkbox" class="custom-checkbox"></div>
+                            <div class="col-span-1 flex justify-center items-center"><span class="text-amber-500 text-sm cursor-pointer select-none star-icon" onclick="toggleStar(this)">☆</span></div>
+                        </div>
+                        <div class="grid grid-cols-12 gap-1 items-center py-0.5 border-b border-slate-100 last:border-0">
+                            <span class="col-span-2 font-bold text-slate-700 text-[11px]">Cum</span>
+                            <input type="text" class="col-span-5 dashed-input text-center text-xs py-0.5">
+                            <input type="text" class="col-span-3 dashed-input text-center text-xs py-0.5">
+                            <div class="col-span-1 flex justify-center items-center"><input type="checkbox" class="custom-checkbox"></div>
+                            <div class="col-span-1 flex justify-center items-center"><span class="text-amber-500 text-sm cursor-pointer select-none star-icon" onclick="toggleStar(this)">☆</span></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Footer Info & Evaluation (Compact and elegant) -->
+        <div class="mt-4 pt-3 border-t border-dashed border-slate-200">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <!-- Targets & Kindness Goal -->
+                <div class="space-y-2">
+                    <div>
+                        <span class="font-bold text-slate-700 flex items-center gap-1.5"><i class="fa-solid fa-bullseye text-red-500"></i> Benim Yaz Okulu Hedeflerim:</span>
+                        <input type="text" class="dashed-input w-full mt-1 px-1 py-0.5 font-medium text-slate-800">
+                    </div>
+                    <div class="flex items-center gap-2 bg-slate-50 p-2 rounded-lg border border-slate-100">
+                        <span class="text-xl">🌟</span>
+                        <div>
+                            <p class="font-bold text-slate-800 text-[10px]">Küçük Kahramanlara Günlük Görev:</p>
+                            <p class="text-[9px] text-slate-500 leading-tight">Her gün bir iyilik yap (Tebessüm et, anne-babana yardım et, doğayı koru) ve kutuyu (<i class="fa-regular fa-square-check"></i>) işaretle!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Teacher's Note and Evaluation -->
+                <div class="bg-slate-50/50 p-3 rounded-xl border border-slate-200/60 flex flex-col justify-between">
+                    <div>
+                        <span class="font-bold text-slate-700 flex items-center gap-1.5"><i class="fa-solid fa-star text-amber-500"></i> Kurs Sonu Değerlendirmesi:</span>
+                        <input type="text" class="dashed-input w-full mt-1.5 px-1 py-0.5 text-xs">
+                    </div>
+                    <div class="flex justify-between items-center mt-2 pt-2 border-t border-slate-200/40 text-[11px]">
+                        <div class="flex items-center gap-1">
+                            <span class="font-bold text-slate-600">Hak Edilen Ödül:</span>
+                            <input type="text" class="dashed-input w-28 px-1">
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <span class="font-bold text-slate-600">Hoca İmza:</span>
+                            <div class="w-16 h-5 border-b border-dashed border-slate-300"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Script section for Interactive Controls -->
+    <script>
+        // Change UI and Print Color Theme
+        function changeTheme(themeName) {
+            const body = document.getElementById('bodyTheme');
+            const controlIcon = document.getElementById('controlIcon');
+            const printBtn = document.getElementById('printBtn');
+            
+            // Clear current theme classes
+            body.classList.remove('theme-emerald', 'theme-sky', 'theme-pink', 'theme-mono');
+            
+            // Add selected theme class
+            if (themeName === 'emerald') {
+                body.classList.add('theme-emerald');
+                controlIcon.className = "p-2 bg-emerald-100 text-emerald-700 rounded-lg";
+                printBtn.className = "px-4 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-lg transition shadow-md flex items-center gap-1.5";
+            } else if (themeName === 'sky') {
+                body.classList.add('theme-sky');
+                controlIcon.className = "p-2 bg-sky-100 text-sky-700 rounded-lg";
+                printBtn.className = "px-4 py-1.5 bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold rounded-lg transition shadow-md flex items-center gap-1.5";
+            } else if (themeName === 'pink') {
+                body.classList.add('theme-pink');
+                controlIcon.className = "p-2 bg-pink-100 text-pink-700 rounded-lg";
+                printBtn.className = "px-4 py-1.5 bg-pink-600 hover:bg-pink-700 text-white text-xs font-bold rounded-lg transition shadow-md flex items-center gap-1.5";
+            } else if (themeName === 'mono') {
+                body.classList.add('theme-mono');
+                controlIcon.className = "p-2 bg-slate-200 text-slate-800 rounded-lg";
+                printBtn.className = "px-4 py-1.5 bg-slate-700 hover:bg-slate-800 text-white text-xs font-bold rounded-lg transition shadow-md flex items-center gap-1.5";
+            }
+        }
+
+        // Star toggle function
+        function toggleStar(element) {
+            if (element.textContent === '☆') {
+                element.textContent = '⭐';
+            } else {
+                element.textContent = '☆';
+            }
+        }
+
+        // Clear all inputs and resets stars
+        function clearForm() {
+            // Clear text inputs
+            const inputs = document.querySelectorAll('input[type="text"]');
+            inputs.forEach(input => input.value = '');
+
+            // Uncheck checkboxes
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => checkbox.checked = false);
+
+            // Reset stars
+            const stars = document.querySelectorAll('.star-icon');
+            stars.forEach(star => star.textContent = '☆');
+        }
+    </script>
+</body>
+</html>
