@@ -1,2 +1,2 @@
 # kkt-cizelge
-Yaz Kuran Kursları İçin Takip Formu
+Yaz Kuran Kursları İçin Öğrenci Takip Formu
